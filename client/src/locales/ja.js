@@ -6,6 +6,7 @@ export default {
     orders: '注文',
     finance: '財務',
     demandForecast: '需要予測',
+    restocking: '再入荷',
     companyName: '触媒コンポーネンツ',
     subtitle: '在庫管理システム'
   },
@@ -186,6 +187,45 @@ export default {
       trend: 'トレンド',
       period: '期間'
     }
+  },
+
+  // Restocking
+  restocking: {
+    title: '再入荷',
+    description: '予算を設定して、AIによる補充推薦を受け取ります',
+    budget: '利用可能予算',
+    budgetUsed: '使用済み予算',
+    budgetRemaining: '残額',
+    recommendations: '補充推奨品目',
+    noRecommendations: '現在の予算内で補充できる品目はありません。予算を増やしてください。',
+    placeOrder: '補充注文を発注',
+    orderPlaced: '補充注文が正常に送信されました',
+    orderId: '注文ID',
+    expectedDelivery: '予定配達日',
+    unitCost: '単価',
+    restockQty: '補充数量',
+    lineTotal: '小計',
+    totalCost: '合計費用',
+    table: {
+      item: '品目',
+      sku: 'SKU',
+      trend: 'トレンド',
+      restockQty: '補充数量',
+      unitCost: '単価',
+      lineTotal: '小計'
+    }
+  },
+
+  // Orders (restocking section additions)
+  restockingOrders: {
+    sectionTitle: '送信済み補充注文',
+    noOrders: '補充注文はまだ送信されていません。',
+    budget: '予算',
+    submitted: '送信日',
+    estimatedDelivery: '予定配達',
+    items: '品目',
+    totalValue: '合計金額',
+    status: 'ステータス'
   },
 
   // Filters

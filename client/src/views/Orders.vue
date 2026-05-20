@@ -8,6 +8,55 @@
     <div v-if="loading" class="loading">{{ t('common.loading') }}</div>
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else>
+      <!-- Submitted Restocking Orders -->
+      <div v-if="restockingOrders.length > 0" class="card restocking-section">
+        <div class="card-header restocking-header" @click="showRestockingOrders = !showRestockingOrders" style="cursor: pointer;">
+          <h3 class="card-title">
+            {{ t('restockingOrders.sectionTitle') }}
+            <span class="badge info" style="margin-left: 0.5rem; font-size: 0.75rem; vertical-align: middle;">{{ restockingOrders.length }}</span>
+          </h3>
+          <button class="collapse-toggle" type="button">
+            {{ showRestockingOrders ? '▼' : '▶' }}
+          </button>
+        </div>
+        <div v-if="showRestockingOrders" class="table-container">
+          <table class="restocking-table">
+            <thead>
+              <tr>
+                <th>{{ t('restockingOrders.status') }}</th>
+                <th>{{ t('restockingOrders.submitted') }}</th>
+                <th>{{ t('restockingOrders.items') }}</th>
+                <th>{{ t('restockingOrders.totalValue') }}</th>
+                <th>{{ t('restockingOrders.estimatedDelivery') }}</th>
+                <th>{{ t('restockingOrders.status') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="rOrder in restockingOrders" :key="rOrder.id">
+                <td><strong>{{ rOrder.id }}</strong></td>
+                <td>{{ formatDate(rOrder.submitted_date) }}</td>
+                <td>
+                  <details class="items-details">
+                    <summary class="items-summary">
+                      {{ t('orders.itemsCount', { count: rOrder.items.length }) }}
+                    </summary>
+                    <div class="items-dropdown">
+                      <div v-for="(item, idx) in rOrder.items" :key="idx" class="item-entry">
+                        <span class="item-name">{{ item.name }}</span>
+                        <span class="item-meta">{{ t('orders.quantity') }}: {{ item.quantity }} @ {{ currencySymbol }}{{ item.unit_cost }}</span>
+                      </div>
+                    </div>
+                  </details>
+                </td>
+                <td><strong>{{ currencySymbol }}{{ rOrder.total_value.toLocaleString() }}</strong></td>
+                <td>{{ formatDate(rOrder.expected_delivery) }}</td>
+                <td><span class="badge info">{{ rOrder.status }}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div class="stats-grid">
         <div class="stat-card success">
           <div class="stat-label">{{ t('status.delivered') }}</div>
@@ -95,6 +144,8 @@ export default {
     const loading = ref(true)
     const error = ref(null)
     const orders = ref([])
+    const restockingOrders = ref([])
+    const showRestockingOrders = ref(true)
 
     // Use shared filters
     const {
@@ -153,13 +204,26 @@ export default {
       })
     }
 
-    onMounted(loadOrders)
+    const loadRestockingOrders = async () => {
+      try {
+        restockingOrders.value = await api.getRestockingOrders()
+      } catch (err) {
+        console.error('Failed to load restocking orders:', err)
+      }
+    }
+
+    onMounted(() => {
+      loadOrders()
+      loadRestockingOrders()
+    })
 
     return {
       t,
       loading,
       error,
       orders,
+      restockingOrders,
+      showRestockingOrders,
       getOrdersByStatus,
       getOrderStatusClass,
       formatDate,
@@ -275,5 +339,29 @@ export default {
 .item-meta {
   font-size: 0.813rem;
   color: #64748b;
+}
+
+/* Restocking section */
+.restocking-header {
+  user-select: none;
+}
+
+.collapse-toggle {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.collapse-toggle:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.restocking-table {
+  width: 100%;
 }
 </style>
