@@ -23,7 +23,7 @@
           <table class="restocking-table">
             <thead>
               <tr>
-                <th>{{ t('restockingOrders.status') }}</th>
+                <th>{{ t('restockingOrders.orderId') }}</th>
                 <th>{{ t('restockingOrders.submitted') }}</th>
                 <th>{{ t('restockingOrders.items') }}</th>
                 <th>{{ t('restockingOrders.totalValue') }}</th>
