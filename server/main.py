@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 from pydantic import BaseModel
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import uuid
 from mock_data import inventory_items, orders, demand_forecasts, backlog_items, spending_summary, monthly_spending, category_spending, recent_transactions, purchase_orders, restocking_orders
 
@@ -330,7 +330,7 @@ def get_monthly_trends():
 @app.post("/api/restocking-orders", response_model=RestockingOrder)
 def create_restocking_order(request: CreateRestockingOrderRequest):
     """Create a new restocking order from budget-based recommendations"""
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     expected = now + timedelta(days=14)
     order = {
         "id": f"RST-{str(uuid.uuid4())[:8].upper()}",

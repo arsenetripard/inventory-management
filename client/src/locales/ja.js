@@ -221,6 +221,7 @@ export default {
     sectionTitle: '送信済み補充注文',
     noOrders: '補充注文はまだ送信されていません。',
     budget: '予算',
+    orderId: '注文ID',
     submitted: '送信日',
     estimatedDelivery: '予定配達',
     items: '品目',

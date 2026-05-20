@@ -221,6 +221,7 @@ export default {
     sectionTitle: 'Submitted Restocking Orders',
     noOrders: 'No restocking orders submitted yet.',
     budget: 'Budget',
+    orderId: 'Order ID',
     submitted: 'Submitted',
     estimatedDelivery: 'Est. Delivery',
     items: 'Items',
